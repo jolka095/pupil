@@ -1,0 +1,9 @@
+In order to use Plot Generator plugin you have to run Pupil Player from source.
+
+How to install required packages for various operating systems:
+- Linux
+pip install -r requirements_linux.txt
+
+- Windows 10
+pip install -r requirements_windows.txt
+
