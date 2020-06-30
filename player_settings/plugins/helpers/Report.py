@@ -1,7 +1,8 @@
 import logging
-import os
 import time
 from datetime import datetime
+from os import startfile, system
+from os.path import join
 
 import fpdf
 from fpdf import FPDF
@@ -18,8 +19,7 @@ class Report(object):
         self.file_handler = file_handler
         self.open_after_download = open_after_download_flag
         self.properties = properties
-        self.font_path = os.path.join(self.file_handler.fonts_dir, 'DejaVuSans.ttf')  # unicode font
-        # self.font_path = "/home/domowy/Pulpit/PUPIL_PLUGIN/pupil/player_settings/plugins/helpers/fonts/DejaVuSans.ttf"  # unicode font
+        self.font_path = join(self.file_handler.fonts_dir, 'DejaVuSans.ttf')  # unicode font
         self.pdf = FPDF(orientation='P', unit='mm', format='A4')
         fpdf.set_global("FPDF_CACHE_MODE", 1)
 
@@ -40,7 +40,7 @@ class Report(object):
         self.parameter_table_header_name = properties.fixation_detector_settings_values_param
         self.value_table_header_name = properties.fixation_detector_settings_values_val
 
-        self.target_file_path = os.path.join(self.file_handler.downloads_dir, self.pdf_file_name)
+        self.target_file_path = join(self.file_handler.downloads_dir, self.pdf_file_name)
 
         self.title_font_size = 25
         self.subtitle_font_size = 20
@@ -129,9 +129,9 @@ class Report(object):
 
         if self.open_after_download:
             try:
-                os.startfile(self.target_file_path)
+                startfile(self.target_file_path)
             except:
-                os.system("xdg-open \"%s\"" % self.target_file_path)
+                system("xdg-open \"%s\"" % self.target_file_path)
 
     def add_unicode_font(self, fontsize):
         print("FONT PATH:\n\n\n", self.font_path)

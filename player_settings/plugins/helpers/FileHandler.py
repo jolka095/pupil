@@ -2,9 +2,8 @@ import csv
 import logging
 import re
 from os import listdir, mkdir
-from os.path import join, isfile, isdir, sep
+from os.path import join, isfile, isdir, sep, abspath, dirname
 
-from player_settings.plugins.helpers.config import *
 from player_settings.plugins.helpers.eye_movements.Fixation import *
 from player_settings.plugins.helpers.eye_movements.Saccade import *
 from player_settings.plugins.helpers.eye_movements.PSO import *
@@ -20,6 +19,7 @@ logger = logging.getLogger(__name__)
 
 class FileHandler(object):
     confidence_treshold = 0.6
+    pupil_helpers_dir = dirname(abspath(__file__))
 
     @staticmethod
     def __create_directory__(location, name):
@@ -46,10 +46,11 @@ class FileHandler(object):
     def __init__(self, g_pool):
         self.base_dir = g_pool.user_dir.rsplit(sep, 1)[0]  # {HOME}\pupil
         self.user_dir = g_pool.user_dir  # self.base_dir\
-        # self.fonts_dir = join(g_pool.user_dir, 'plugins', 'helpers', 'fonts') # Windows, player_settings in USER_HOME
-        self.fonts_dir = join(pupil_repository_dir, 'player_settings', 'plugins', 'helpers', 'fonts')  # TODO: set proper dir in config file
+        self.fonts_dir = join(self.pupil_helpers_dir, 'fonts')
         self.recording_dir = g_pool.rec_dir
-        self.info_file = join(self.recording_dir, "info.old_style.csv")  # TODO: check; info.csv or export_info.csv in old versions
+
+        # TODO: check; info.csv or export_info.csv in old versions
+        self.info_file = join(self.recording_dir, "info.old_style.csv")
         self.exports_dir = self.get_recent_exported_dir_path()
 
         if self.exports_dir is not None:
@@ -161,7 +162,7 @@ class FileHandler(object):
                 #     print(value.to_string())  # debug logging
                 return surfaces_objects_dict, total_gaze_point_count
         #     else:
-                logger.error("NOT FOUND: surface_gaze_distribution.csv")
+        #         logger.error("NOT FOUND: surface_gaze_distribution.csv")
         else:
             logger.error("NOT FOUND: /surfaces directory")
 
