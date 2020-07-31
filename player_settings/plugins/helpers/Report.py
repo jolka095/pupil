@@ -113,7 +113,12 @@ class Report(object):
 
     def add_plot(self, plot):
         self.pdf.add_page()
-        self.pdf.image(u'{}'.format(plot.image_path), w=190)
+        try:
+            self.pdf.image(plot.image_path, w=190)
+        except FileNotFoundError as exception:
+            logger.error(f"NOT FOUND file {plot.image_path}")
+            print(exception)
+
         self.add_unicode_font(plot.fontsize)
         self.pdf.multi_cell(w=190, h=10, txt=self.pdf.normalize_text(plot.description))
 
@@ -124,8 +129,8 @@ class Report(object):
         logger.info(f'Save report into {self.target_file_path}')
         self.pdf.output(self.target_file_path)
 
-        logger.info("Report '{}' saved".format(self.pdf_file_name))
-        logger.info("Report directory: {}".format(self.file_handler.downloads_dir))
+        logger.info(f"Report '{self.pdf_file_name}' saved")
+        logger.info(f"Report directory: {self.file_handler.downloads_dir}")
 
         if self.open_after_download:
             try:
@@ -134,6 +139,6 @@ class Report(object):
                 system("xdg-open \"%s\"" % self.target_file_path)
 
     def add_unicode_font(self, fontsize):
-        print("FONT PATH:\n\n\n", self.font_path)
+        print("FONT PATH: \n", self.font_path)
         self.pdf.add_font(family="font", fname=self.font_path, uni=True)
         self.pdf.set_font(family="font", size=fontsize)

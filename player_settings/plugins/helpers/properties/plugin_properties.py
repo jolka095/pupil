@@ -3,7 +3,7 @@
 plugin_name = "Plot Report Generator"
 subtitle_1 = "Download PDF reports with various plots, charts and more!"
 subtitle_2 = "ATTENTION! Before generating any reports use Raw Data Exporter Plugin " \
-             "(with enabled Surface Tracker, Fixation Detector & Eye Movement Detector" \
+             "(with enabled Surface Tracker, Fixation Detector & Eye Movement Detector " \
              "plugins) to export eyetracking data in CSV format. "
 
 

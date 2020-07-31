@@ -1,4 +1,4 @@
-﻿"""
+"""
 (*)~---------------------------------------------------------------------------
 Pupil - eye tracking platform
 Copyright (C) 2012-2019 Pupil Labs
@@ -82,29 +82,40 @@ class Plot_Report_Generator(Plugin):
 
         self.add_menu()
         self.menu.label = plugin_name  # nazwa pluginu
-        self.menu.append(ui.Info_Text(subtitle_1))  # opis
-        self.menu.append(ui.Info_Text(subtitle_2))
+
+        general_informations = [
+            ui.Info_Text(subtitle_1),
+            ui.Info_Text(subtitle_2),
+            ui.Info_Text(plots_options_description),
+            ui.Button(mark_all_label, self.mark_all_plots),
+        ]
 
         # opcje wykresów do wyboru
-        self.menu.append(ui.Info_Text(plots_options_description))
-        self.menu.append(ui.Button(mark_all_label, self.mark_all_plots))
+        plots_options = [
+            ui.Switch("surface_visibility_option", self, label=surface_visibility_option_name),
+            ui.Switch("heatmaps_option", self, label=heatmaps_option_name),
+            ui.Switch("eye_movements_option", self, label=eye_movements_option_name),
+            ui.Switch("fixations_per_surface_option", self, label=fixations_per_surface_option_name),
+            ui.Switch("fixations_frequency_option", self, label=fixations_frequency_option_name),
+            ui.Switch("fixations_durations_option", self, label=fixations_durations_option_name),
+            # ui.Switch("saccades_per_surface_option", self, label=saccades_per_surface_option_name)
+        ]
 
-        self.menu.append(ui.Switch("surface_visibility_option", self, label=surface_visibility_option_name))
-        self.menu.append(ui.Switch("heatmaps_option", self, label=heatmaps_option_name))
-        self.menu.append(ui.Switch("eye_movements_option", self, label=eye_movements_option_name))
-        self.menu.append(ui.Switch("fixations_per_surface_option", self, label=fixations_per_surface_option_name))
-        self.menu.append(ui.Switch("fixations_frequency_option", self, label=fixations_frequency_option_name))
-        self.menu.append(ui.Switch("fixations_durations_option", self, label=fixations_durations_option_name))
-        # self.menu.append(ui.Switch("saccades_per_surface_option", self, label=saccades_per_surface_option_name))
+        # ustawienia generowanego raportu
+        report_options = [
+            ui.Info_Text(report_download_description),
+            ui.Selector("language_option", self, label=language_option_label,
+                        selection=[report_eng_opt_label, report_pl_opt_label]),
+            ui.Text_Input("pdf_report_file_name", self, label=report_name_label,
+                          getter=lambda: report_name_placeholder_label),
+            ui.Button(download_report_button_name, self.download_pdf_report),
+            ui.Switch("open_report_after_download_option", self, label=open_report_after_download)
+        ]
 
-        # ustawienia właściwości generowanego raportu
-        self.menu.append(ui.Info_Text(report_download_description))
-        self.menu.append(ui.Selector("language_option", self, label=language_option_label,
-                                     selection=[report_eng_opt_label, report_pl_opt_label]))
-        self.menu.append(ui.Text_Input("pdf_report_file_name", self, label=report_name_label,
-                                       getter=lambda: "{}".format(report_name_placeholder_label)))
-        self.menu.append(ui.Button(download_report_button_name, self.download_pdf_report))
-        self.menu.append(ui.Switch("open_report_after_download_option", self, label=open_report_after_download))
+        menu_items = general_informations + plots_options + report_options
+
+        for menu_item in menu_items:
+            self.menu.append(menu_item)
 
     def deinit_ui(self):
         self.remove_menu()
@@ -166,8 +177,8 @@ class Plot_Report_Generator(Plugin):
 
         for key_index, plot in self.plots_dict.items():
             print("\n################################################\n"
-                  "## Generate plot \"{}\"\n"
-                  "################################################\n".format(plot.title.upper()))
+                  f"## Generate plot \"{plot.title.upper()}\"\n"
+                  "################################################\n")
             list_of_plots_options = [
                 self.surface_visibility_option,
                 self.heatmaps_option,
