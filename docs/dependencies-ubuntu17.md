@@ -92,7 +92,14 @@ sudo ldconfig
 This is **ONLY** required if you are using 200hz cameras. Otherwise it can be ignored!
 
 1. Build or download fixed binary from release: https://github.com/pupil-labs/libusb/releases/tag/v1.0.21-rc6-fixes
-1. Replace system libusb-1.0.so.0 with this binary.
+1. Replace system libusb-1.0.so.0 with this binary. You can find the path of the system library with
+
+    ```sh
+    dpkg -L libusb-1.0-0-dev | grep libusb-1.0.so
+    ```
+
+    Please note that this command gives you the location of `libusb-1.0.so` while you need to replace `libusb-1.0.so.0`, but the required file should be found in the same folder.
+
 
 ## libuvc
 ```sh
@@ -133,6 +140,7 @@ The build and install the Ceres solver:
 ```sh
 git clone https://ceres-solver.googlesource.com/ceres-solver
 cd ceres-solver
+git checkout 1.14.0
 mkdir build && cd build
 cmake .. -DBUILD_SHARED_LIBS=ON
 make -j3
@@ -159,6 +167,7 @@ pip install psutil
 pip install pyaudio
 pip install pyopengl
 pip install pyzmq
+pip install scikit-learn
 pip install scipy
 pip install git+https://github.com/zeromq/pyre
 
