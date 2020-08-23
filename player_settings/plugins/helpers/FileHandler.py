@@ -1,4 +1,5 @@
 import csv
+import json
 import logging
 import re
 from os import listdir, mkdir
@@ -50,7 +51,9 @@ class FileHandler(object):
         self.recording_dir = g_pool.rec_dir
 
         # TODO: check; info.csv or export_info.csv in old versions
-        self.info_file = join(self.recording_dir, "info.old_style.csv")
+        # self.info_file = join(self.recording_dir, "info.old_style.csv")
+        self.info_file = join(self.recording_dir, "info.player.json")
+
         self.exports_dir = self.get_recent_exported_dir_path()
 
         if self.exports_dir is not None:
@@ -80,17 +83,20 @@ class FileHandler(object):
         """
             This method finds the latest exported directory of current recording.
         """
-        exports_dir = join(self.recording_dir, "exports")
-        latest = None
+        try:
+            exports_dir = join(self.recording_dir, "exports")
+            latest = None
 
-        if isdir(exports_dir):
-            exports_subdirectories = sorted(listdir(exports_dir))
-            print("$$$$$ exports_subdirectories", exports_subdirectories)
-            latest = join(exports_dir, exports_subdirectories[len(exports_subdirectories) - 1])
-            print("The latest directory in \\exports: \n", latest)
-        else:
-            logger.error(not_found_exports_dir_info.format(self.recording_dir))
-        return latest
+            if isdir(exports_dir):
+                exports_subdirectories = sorted(listdir(exports_dir))
+                print(">>> exports_subdirectories", exports_subdirectories)
+                latest = join(exports_dir, exports_subdirectories[len(exports_subdirectories) - 1])
+                print("The latest directory in \\exports: \n", latest)
+            else:
+                logger.error(not_found_exports_dir_info.format(self.recording_dir))
+            return latest
+        except Exception:
+            logger.error("No /exports directory found. Export data using Raw Data Exporter plugin")
 
     #########################################################
     #       loading raw data from CSV exported files
@@ -100,11 +106,26 @@ class FileHandler(object):
         basic_rec_info_dict = {}
         print("Load export info data from ", self.info_file)
         if isfile(self.info_file):
-            with open(file=self.info_file, newline='') as file:
-                dict_reader = csv.DictReader(file)
-                for row in dict_reader:
-                    basic_rec_info_dict[row["key"]] = row["value"]
-                file.close()
+
+            with open(self.info_file) as json_file:
+                data = json.load(json_file)
+                print(data["duration_s"])
+                print(data["meta_version"])
+                print(data["min_player_version"])
+                print(data["recording_name"])
+                print(data["recording_software_name"])
+                print(data["recording_software_version"])
+                print(data["recording_uuid"])
+                print(data["start_time_synced_s"])
+                print(data["start_time_system_s"])
+                print(data["system_info"])
+                basic_rec_info_dict = data
+
+            # with open(file=self.info_file, newline='') as file:
+            #     dict_reader = csv.DictReader(file)
+            #     for row in dict_reader:
+            #         basic_rec_info_dict[row["key"]] = row["value"]
+            #     file.close()
             print(basic_rec_info_dict)
             return basic_rec_info_dict
         else:
@@ -208,14 +229,14 @@ class FileHandler(object):
                                     else:
                                         print("\tINFO: Fixation #{} detected on more than one surface".format(
                                             fixation_id))
-#                                 # else:
-#                                 #     print("Fixation #{} not on defined surface (on_srf = False)".format(fixation_id))
-                                #     if fixation_id not in self.fixations_indexes_list:
-                                #         not_on_any_surface_obj = surfaces_objects_dict['not_on_any_surface']
-                                #         not_on_any_surface_obj.add_fixation_to_surface_list(fixation_obj)
-                                #         self.fixations_indexes_list.append(fixation_id)
-#                                 #     else:
-#                                 #         print("Fixation #{} had already been loaded".format(fixation_id))
+                            #                                 # else:
+                            #                                 #     print("Fixation #{} not on defined surface (on_srf = False)".format(fixation_id))
+                            #     if fixation_id not in self.fixations_indexes_list:
+                            #         not_on_any_surface_obj = surfaces_objects_dict['not_on_any_surface']
+                            #         not_on_any_surface_obj.add_fixation_to_surface_list(fixation_obj)
+                            #         self.fixations_indexes_list.append(fixation_id)
+                            #                                 #     else:
+                            #                                 #         print("Fixation #{} had already been loaded".format(fixation_id))
                             file.close()
         else:
             logger.error("NOT FOUND data about defined surfaces. Check if /surfaces directory exists.")
@@ -251,7 +272,7 @@ class FileHandler(object):
             for surface_name, surface_obj in surfaces_objects_dict.items():
 
                 for filename in listdir(self.surfaces_path):
-                    if re.search("gaze_positions_on_surface_{}.+".format(surface_name), filename):
+                    if re.search(f"gaze_positions_on_surface_{surface_name}.+", filename):
                         self.log_loading_data_from_file(filename)
 
                         with open(join(self.surfaces_path, filename), newline='') as file:

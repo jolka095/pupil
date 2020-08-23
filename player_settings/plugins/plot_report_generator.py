@@ -28,7 +28,8 @@ from player_settings.plugins.helpers.properties.plugin_properties import *
 from player_settings.plugins.helpers.properties import properties_pl
 from player_settings.plugins.helpers.properties import properties
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
+logger = logging.getLogger()
 
 
 class Plot_Report_Generator(Plugin):
@@ -77,6 +78,8 @@ class Plot_Report_Generator(Plugin):
 
         self.all_eye_movement_dict = {}
 
+        self.recording_dir = g_pool.rec_dir
+
     def init_ui(self):
         """ Plugin's UI (user interface) initialization """
 
@@ -94,7 +97,7 @@ class Plot_Report_Generator(Plugin):
         plots_options = [
             ui.Switch("surface_visibility_option", self, label=surface_visibility_option_name),
             ui.Switch("heatmaps_option", self, label=heatmaps_option_name),
-            ui.Switch("eye_movements_option", self, label=eye_movements_option_name),
+            # ui.Switch("eye_movements_option", self, label=eye_movements_option_name),
             ui.Switch("fixations_per_surface_option", self, label=fixations_per_surface_option_name),
             ui.Switch("fixations_frequency_option", self, label=fixations_frequency_option_name),
             ui.Switch("fixations_durations_option", self, label=fixations_durations_option_name),
@@ -137,23 +140,37 @@ class Plot_Report_Generator(Plugin):
         self.fixations_durations_option = self.all_plots_flag
         self.saccades_per_surface_option = self.all_plots_flag
         self.heatmaps_option = self.all_plots_flag
-        self.eye_movements_option = self.all_plots_flag
+        # self.eye_movements_option = self.all_plots_flag
+
+    def is_data_exported(self):
+        """
+        Check if /exports directory exists
+        :return: data_exported
+        """
+        data_exported = False
+        try:
+            exports_dir = join(self.recording_dir, "exports")
+            if isdir(exports_dir):
+                data_exported = True
+        except Exception:
+            logger.error("No /exports directory found. Export data using Raw Data Exporter plugin")
+        return data_exported
 
     def download_pdf_report(self):
         """
             Saves PDF report into /downloads folder in recording directory.
         """
         if self.any_options_chosen():
-            print("\n\nWait for report to be generated...\n\n")
-            if not self.data_generated:
-                self.file_handler = FileHandler(self.g_pool)  # set all needed file paths
-                self.load_data_from_csv_files()
-            if isdir(self.file_handler.exports_dir) and isdir(self.file_handler.surfaces_path):
-                self.generate_report()
-                self.plots_dict = {}
-        else:
-            print("Choose option!")
-
+            if self.is_data_exported():
+                print("\n\nWait for report to be generated...\n\n")
+                if not self.data_generated:
+                    self.file_handler = FileHandler(self.g_pool)  # set all needed file paths
+                    self.load_data_from_csv_files()
+                    if isdir(self.file_handler.exports_dir) and isdir(self.file_handler.surfaces_path):  # Fixme
+                        self.generate_report()
+                        self.plots_dict = {}
+            else:
+                logger.error("No /exports directory found. Export data using Raw Data Exporter plugin")
         self.data_generated = True
 
     def generate_report(self):
