@@ -24,7 +24,7 @@ That file contains information about:
 - total number of gaze points in whole recording 
 (*'total_gaze_point_count'* parameter).
 
-![surface_visibility.png](surface_visibility_percentage.png)
+![surface_visibility.png](player_settings/plugins/helpers/report_plots/surface_visibility_percentage.png)
 
 #### Heatmaps
 Heatmaps visualizes the distribution of gaze points that lie within each surface.
@@ -32,7 +32,7 @@ Lighter colors represents areas where the amount of time spend gazing on this re
 was the biggest (i.e. there were more gaze points registered in this region). Dark places
 on map are areas avoided by person's gaze
 
-![heatmaps.png](heatmaps.png)
+![heatmaps.png](player_settings/plugins/helpers/report_plots/heatmaps.png)
 
 #### Fixations (count & duration) on surface
 This plot shows number of fixation on particular surfaces and their
@@ -50,7 +50,7 @@ into account. In some cases, this parameter has the same value for more
 than one surface that is why some discrepancies in total number of
 fixations can occur.
 
-![fixations_count_per_surface.png](fixations_count_per_surface.png)
+![fixations_count_per_surface.png](player_settings/plugins/helpers/report_plots/fixations_count_per_surface.png)
 
 #### Fixations frequency
 Plot shows fixation frequencies on particular surfaces. Average
@@ -69,7 +69,7 @@ Data from:
  
  were used to create this plot.
 
-![fixations_frequency.png](fixations_frequency.png)
+![fixations_frequency.png](player_settings/plugins/helpers/report_plots/fixations_frequency.png)
 
 #### Fixations on timeline
  This plot shows fixations on timeline. Data from files named „info.csv”
@@ -80,7 +80,7 @@ Parameters which were use to calculation are:
 - *Start Time (Synced)* - recording start timestamp,
 - *Duration Time* - recording duration.
 
-![fixations_durations.png](fixations_durations.png)
+![fixations_durations.png](player_settings/plugins/helpers/report_plots/fixations_durations.png)
 
 
 ## License
