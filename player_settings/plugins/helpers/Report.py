@@ -92,23 +92,26 @@ class Report(object):
         epw = self.pdf.w - 2 * self.pdf.l_margin  # effective page width, or just epw
         col_width = epw / 2  # distribute columns content evenly across table and page
 
-        data = [
-            [self.parameter_table_header_name, self.value_table_header_name],
-            ["max_dispersion", fixation_report_obj.max_dispersion],
-            ["min_duration", fixation_report_obj.min_duration],
-            ["max_duration", fixation_report_obj.max_duration],
-            ["fixation_count", fixation_report_obj.fixation_count]
-        ]
+        data = {
+            self.parameter_table_header_name: self.value_table_header_name,
+            "max_dispersion": fixation_report_obj.max_dispersion,
+            "min_duration": fixation_report_obj.min_duration,
+            "max_duration": fixation_report_obj.max_duration,
+            "fixation_count": fixation_report_obj.fixation_count
+        }
 
         th = self.pdf.font_size
         self.pdf.multi_cell(w=190, h=8, txt=self.fixation_detector_table_description, align="L")
-        for i, row in enumerate(data):
-            for datum in row:
-                if i == 0:
-                    self.pdf.cell(w=col_width, h=(2 * th), txt=self.pdf.normalize_text(str(datum)), border=1, align="C")
-                    self.pdf.set_font(family="font", size=10)
-                else:
-                    self.pdf.cell(col_width, 2 * th, self.pdf.normalize_text(str(datum)), border=1, align="C")
+        counter = 0
+        for key, value in data.items():
+            counter += 1
+            if counter == 1:
+                self.pdf.cell(w=col_width, h=(2 * th), txt=self.pdf.normalize_text(str(key)), border=1, align="C")
+                self.pdf.cell(w=col_width, h=(2 * th), txt=self.pdf.normalize_text(str(value)), border=1, align="C")
+                self.pdf.set_font(family="font", size=10)
+            else:
+                self.pdf.cell(col_width, 2 * th, self.pdf.normalize_text(str(key)), border=1, align="C")
+                self.pdf.cell(col_width, 2 * th, self.pdf.normalize_text(str(value)), border=1, align="C")
             self.pdf.ln(2 * th)
 
     def add_plot(self, plot):

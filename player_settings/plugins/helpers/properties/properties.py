@@ -11,7 +11,7 @@ subtitle_with_exported_dir_path = "Exports subdirectory: {}"
 fixation_subsection_title = "Fixations"
 fixation_subsection_description = \
     "\n      Fixations are eye movements that stabilize the retina over a stationary object of interest. " \
-    "The term \"fixation\"is used to refer to the point of focus on particular area in field of view. " \
+    "The term \"fixation\" is used to refer to the point of focus on particular area in field of view. " \
     "Fixation is the point between any two saccades, during which the eyes are " \
     "relatively stationary and virtually all visual input occurs. " \
     "They are characterized by the miniature eye movements: tremor, drift, and microsaccades. " \

@@ -1,0 +1,77 @@
+#########################################
+requirements_windows.txt - versions
+#########################################
+
+Cython==0.29.5
+msgpack==0.5.6
+numexpr==2.7.1
+opencv-python==3.4.9.33
+packaging==19.0
+psutil==5.5.1
+PyAudio==0.2.11
+PyOpenGL==3.1.3b2
+pyzmq==17.1.2
+scipy==1.2.0
+win-inet-pton==1.1.0
+
+git+https://github.com/zeromq/pyre
+pyre==0.3.2
+
+pupil-apriltags==1.0.3
+pupil-detectors==1.1.0
+
+matplotlib==3.0.3
+fpdf==1.7.2
+
+#########################################
+other packages
+#########################################
+
+av @ file:///C:/Users/Jolka/PycharmProjects/pupil_fork_new_version_2_2/av-0.4.5-cp36-cp36m-win_amd64.whl
+ndsi @ file:///C:/Users/Jolka/PUPIL_PLUGIN/pupil/ndsi-1.3-cp36-cp36m-win_amd64.whl
+pyglui @ file:///C:/Users/Jolka/PycharmProjects/pupil_fork_new_version_2_2/pyglui-1.28-cp36-cp36m-win_amd64.whl
+uvc @ file:///C:/Users/Jolka/PUPIL_PLUGIN/pupil/uvc-0.13-cp36-cp36m-win_amd64.whl
+
+#########################################
+alabaster==0.7.12
+autopep8==1.4.3
+Babel==2.7.0
+boost-python==1.67
+certifi==2019.6.16
+chardet==3.0.4
+colorama==0.4.1
+cycler==0.10.0
+doc8==0.8.0
+docutils==0.15
+idna==2.8
+imagesize==1.1.0
+ipaddress==1.0.22
+Jinja2==2.10.1
+joblib==0.16.0
+kiwisolver==1.1.0
+MarkupSafe==1.1.1
+numpy==1.19.1
+pbr==5.4.1
+Pillow==6.0.0
+pupil-pthreads-win==2
+pycodestyle==2.5.0
+pygame==1.9.4
+Pygments==2.4.2
+pyparsing==2.4.0
+pyrealsense2==2.21.0.776
+python-dateutil==2.8.0
+pytz==2019.1
+pyzmq==17.1.2
+reportlab==3.5.23
+requests==2.22.0
+restructuredtext-lint==1.3.0
+scikit-learn==0.23.2
+scipy==1.2.0
+six==1.12.0
+sklearn==0.0
+snowballstemmer==1.9.0
+stevedore==1.30.1
+threadpoolctl==2.1.0
+torch==1.0.1
+torchvision==0.2.2.post3
+urllib3==1.25.3

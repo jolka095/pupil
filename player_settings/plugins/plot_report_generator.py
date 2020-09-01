@@ -206,7 +206,7 @@ class Plot_Report_Generator(Plugin):
                 # self.saccades_per_surface_option
             ]
             if list_of_plots_options[int(key_index)] is not False:
-                if int(key_index) in [3, 4, 5] and not fixations_section_added:
+                if int(key_index) in [2, 3, 4] and not fixations_section_added:
                     report.add_subsection(title=self.properties.fixation_subsection_title,
                                           description=self.properties.fixation_subsection_description)
                     report.add_fixation_report(self.fixation_report)
@@ -241,22 +241,14 @@ class Plot_Report_Generator(Plugin):
                 surfaces_dict=self.surfaces_objects_dict,
                 properties=self.properties)
 
-        if self.eye_movements_option:
-            self.plots_dict["2"] = EyeMovementsPlot(
-                image_path=join(self.file_handler.images_dir, self.properties.eye_movements_filename),
-                surfaces_dict=self.surfaces_objects_dict,
-                properties=self.properties,
-                rec_duration=self.duration,
-                all_eye_movements=self.all_eye_movement_dict)
-
         if self.fixations_per_surface_option:
-            self.plots_dict["3"] = FixationsPerSurfacePlot(
+            self.plots_dict["2"] = FixationsPerSurfacePlot(
                 image_path=join(self.file_handler.images_dir, self.properties.fixations_count_per_surface_filename),
                 surfaces_dict=self.surfaces_objects_dict,
                 properties=self.properties)
 
         if self.fixations_frequency_option:
-            self.plots_dict["4"] = FixationsFrequencyPlot(
+            self.plots_dict["3"] = FixationsFrequencyPlot(
                 image_path=join(self.file_handler.images_dir, self.properties.fixations_frequency_filename),
                 surfaces_dict=self.surfaces_objects_dict,
                 total_gaze_point_count=self.total_gaze_point_count,
@@ -265,12 +257,20 @@ class Plot_Report_Generator(Plugin):
                 properties=self.properties)
 
         if self.fixations_durations_option:
-            self.plots_dict["5"] = FixationsDurationPlot(
+            self.plots_dict["4"] = FixationsDurationPlot(
                 image_path=join(self.file_handler.images_dir, self.properties.fixations_durations_filename),
                 surfaces_dict=self.surfaces_objects_dict,
                 rec_start=self.first_timestamp,
                 rec_duration=self.duration,
                 properties=self.properties)
+
+        # if self.eye_movements_option:
+        #     self.plots_dict["5"] = EyeMovementsPlot(
+        #         image_path=join(self.file_handler.images_dir, self.properties.eye_movements_filename),
+        #         surfaces_dict=self.surfaces_objects_dict,
+        #         properties=self.properties,
+        #         rec_duration=self.duration,
+        #         all_eye_movements=self.all_eye_movement_dict)
 
         # if self.saccades_per_surface_option:
         #     self.plots_dict["6"] = SaccadesPerSurfacePlot(
