@@ -1,97 +1,86 @@
-# Pupil
-<a 
-href="https://pupil-labs.com"
-rel="noopener"
-target="_blank">
-	<p align="center">
-		<img 
-		src="https://raw.githubusercontent.com/wiki/pupil-labs/pupil/media/images/pupil_labs_pupil_core_repo_banner.jpg" 
-		alt="Pupil Labs - Pupil Core software: open source eye tracking platform."/>
-	</p>
-</a>
+# Plot Report Generator
 
-**Open source eye tracking platform.**
+**Pupil Player plugin**
 
-Pupil is a project in active, community driven development. Pupil Core mobile eye tracking hardware is accessible, hackable, and affordable. The software is open source and written in `Python` and `C++` when speed is an issue.
+Download PDF reports with various plots and charts.
 
-Our vision is to create tools for a diverse group of people interested in learning about eye tracking and conducting their eye tracking projects.
+Before generating any reports,
+in order to export eyetracking data in CSV format, 
+use **Raw Data Exporter** plugin
+with enabled plugins:
+ - Surface Tracker
+ - Fixation Detector
+ 
+In order to use this plugin you have to **run this Pupil application from source**.
+## Report content
+#### Surfaces visibility
+This plot shows how many time user was looking at particular surface,
+which was previously defined. 
 
-Chat with us on [Discord](https://pupil-labs.com/chat "Pupil Server on Discord").
+Eye-tracking data on the basis of which plot
+was made, were taken from file called *surface_gaze_distribution.csv*.
+That file contains information about:
+- number of gaze points on particular areas (surfaces) 
+- total number of gaze points in whole recording 
+(*'total_gaze_point_count'* parameter).
 
-## Users
-<a 
-href="https://github.com/pupil-labs/pupil/releases/latest#user-content-downloads"
-rel="noopener"
-target="_blank">
-	<p align="center">
-		<img 
-		src="https://raw.githubusercontent.com/wiki/pupil-labs/pupil/media/images/pupil_labs_pupil_core_app_download_banner.jpg" 
-		alt="Download the latest Pupil Core Apps: Pupil Capture, Pupil Player, Pupil Service"/>
-	</p>
-</a>
+![surface_visibility.png](surface_visibility_percentage.png)
 
+#### Heatmaps
+Heatmaps visualizes the distribution of gaze points that lie within each surface.
+Lighter colors represents areas where the amount of time spend gazing on this region
+was the biggest (i.e. there were more gaze points registered in this region). Dark places
+on map are areas avoided by person's gaze
 
-You don't need to know how to write code to _use_ Pupil. [Download the latest apps](https://github.com/pupil-labs/pupil/releases/latest#user-content-downloads "Download Pupil Capture, Pupil Player, and Pupil Service application bundles")! 
+![heatmaps.png](heatmaps.png)
 
-Read the [Pupil Core user guide](https://docs.pupil-labs.com/core/ "Pupil Core user guide"). 
+#### Fixations (count & duration) on surface
+This plot shows number of fixation on particular surfaces and their
+duration. 
 
-## Developers
-There are a number of ways you can interact with Pupil Core software as a developer:
+Data from files with prefix *'fixations_on_surface_'* were used to
+generate this plot. These files contains parameters like:
+- *id* - identification number,
+- *start_timestamp* - start of fixation,
+- *duration* - fixation duration [ms],
+- *on_srf* - determines whether fixation was detecter on surface or not.
 
-- [Use the API](https://docs.pupil-labs.com/developer/core/network-api/): Use the network based real-time API to communicate with Pupil over the network and integrate with your application. 
-- [Develop a Plugin](https://docs.pupil-labs.com/developer/core/plugin-api/): Plugins are loaded at runtime from the app bundle. Note: if your plugin requires Python libraries that are not included in the application bundle, then you will need to run from source. 
-- [Run from Source](#installing-dependencies): Can't do what you need to do with the network based api or plugin? Then get ready to dive into the inner workings of Pupil and run from source!
+**ATTENTION**: Only fixations with parameter *'on_srf'* equal *True* were taken
+into account. In some cases, this parameter has the same value for more
+than one surface that is why some discrepancies in total number of
+fixations can occur.
 
-All setup and dependency installation instructions are contained in this repo. All other developer documentation is [here](https://docs.pupil-labs.com/developer/core "Pupil Core developer docs").
+![fixations_count_per_surface.png](fixations_count_per_surface.png)
 
-### Installing Dependencies
-- [Ubuntu 18.04 LTS](./docs/dependencies-ubuntu18.md "Pupil dependency installation for Ubuntu 18.04") (recommended Linux distribution)
-- [Ubuntu 17.10 or lower](./docs/dependencies-ubuntu17.md "Pupil dependency installation for Ubuntu 17.10 or lower")
-- [macOS](./docs/dependencies-macos.md "Pupil dependency installation for macOS")
-- [Windows 10](./docs/dependencies-windows.md "Pupil dependency installation for Windows 10")
+#### Fixations frequency
+Plot shows fixation frequencies on particular surfaces. Average
+frequency is equal to quotient of:
+- number of all fixations
+- and total duration of recording.
 
-### Clone the repo
-After you have installed all dependencies, clone this repo and start Pupil software.
+On the other hand, frequency of fixations on particular area is equal to
+quotient of:
+- number of fixations on this surface
+- and time spent on looking at this area.
 
-```sh
-git clone https://github.com/pupil-labs/pupil.git # or your fork
-cd pupil
-```
+Data from:
+ - *surface_gaze_distribution.csv* file
+ - files with prefix *'fixations_on_surface_'* 
+ 
+ were used to create this plot.
 
-_Note_: If you are using Windows, you will have to complete a few more steps after cloning the repo. Please refer to the [Windows 10 dependencies setup guide](./docs/dependencies-windows.md "Pupil dependency installation for Windows 10").
+![fixations_frequency.png](fixations_frequency.png)
 
-### Run Pupil
+#### Fixations on timeline
+ This plot shows fixations on timeline. Data from files named „info.csv”
+and with prefix „fixations_on_surface” were used to create this plot.
+Parameters which were use to calculation are:
+- *start_timestamp* - start of every fixation,
+- *duration* - duration of particular fixations,
+- *Start Time (Synced)* - recording start timestamp,
+- *Duration Time* - recording duration.
 
-#### Windows
-
-```powershell
-cd pupil_src
-run_capture.bat
-# or run_player.bat
-# or run_service.bat
-```
-
-#### macOS/Linux
-
-```sh
-cd pupil_src
-python main.py capture # or player/service
-```
-
-#### Command Line Arguments
-
-The following arguments are supported:
-
-| Flag                   | Description                              |
-| ---------------------- | ---------------------------------------- |
-| `-h, --help`           | Show help message and exit.              |
-| `--version`            | Show version and exit.                   |
-| `--debug`              | Display debug log messages.              |
-| `--profile`            | Profile the app's CPU time.              |
-| `-P PORT, --port PORT` | (Capture/Service) Port for Pupil Remote. |
-| `--hide-ui`            | (Capture/Service) Hide UI on startup.    |
-| `<recording>`          | (Player) Path to recording.              |
-
+![fixations_durations.png](fixations_durations.png)
 
 
 ## License
