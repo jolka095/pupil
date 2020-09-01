@@ -13,7 +13,7 @@ with enabled plugins:
  
 In order to use this plugin you have to **run this Pupil application from source**.
 ## Report content
-#### Surfaces visibility
+### Surfaces visibility
 This plot shows how many time user was looking at particular surface,
 which was previously defined. 
 
@@ -26,7 +26,7 @@ That file contains information about:
 
 ![surface_visibility.png](player_settings/plugins/helpers/report_plots/surface_visibility_percentage.png)
 
-#### Heatmaps
+### Heatmaps
 Heatmaps visualizes the distribution of gaze points that lie within each surface.
 Lighter colors represents areas where the amount of time spend gazing on this region
 was the biggest (i.e. there were more gaze points registered in this region). Dark places
@@ -34,7 +34,7 @@ on map are areas avoided by person's gaze
 
 ![heatmaps.png](player_settings/plugins/helpers/report_plots/heatmaps.png)
 
-#### Fixations (count & duration) on surface
+### Fixations (count & duration) on surface
 This plot shows number of fixation on particular surfaces and their
 duration. 
 
@@ -52,7 +52,7 @@ fixations can occur.
 
 ![fixations_count_per_surface.png](player_settings/plugins/helpers/report_plots/fixations_count_per_surface.png)
 
-#### Fixations frequency
+### Fixations frequency
 Plot shows fixation frequencies on particular surfaces. Average
 frequency is equal to quotient of:
 - number of all fixations
@@ -71,7 +71,7 @@ Data from:
 
 ![fixations_frequency.png](player_settings/plugins/helpers/report_plots/fixations_frequency.png)
 
-#### Fixations on timeline
+### Fixations on timeline
  This plot shows fixations on timeline. Data from files named „info.csv”
 and with prefix „fixations_on_surface” were used to create this plot.
 Parameters which were use to calculation are:
